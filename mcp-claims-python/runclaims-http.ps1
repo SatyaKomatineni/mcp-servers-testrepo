@@ -1,0 +1,1 @@
+uv run mcp-claims-server.py --transport streamable-http

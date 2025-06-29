@@ -1,3 +1,4 @@
+import argparse
 from fastmcp import FastMCP
 from tests.test_claims import test_claims
 from typing import Optional
@@ -26,8 +27,29 @@ def lookup_claim(claim_id: str) -> Optional[dict]:
             return claim.model_dump()
     return None
 
-if __name__ == "__main__":
-    # This runs the server, defaulting to STDIO transport
-    # mcp.run()
+def main():
+    parser = argparse.ArgumentParser(description='Run the Claims server with specified transport')
+    parser.add_argument('--transport', 
+                       choices=['streamable-http', 'stdio'],
+                       default='stdio',
+                       help='Transport type to use (default: stdio)')
+    parser.add_argument('--host',
+                       default='127.0.0.1',
+                       help='Host for streamable-http transport (default: 127.0.0.1)')
+    parser.add_argument('--port',
+                       type=int,
+                       default=9003,
+                       help='Port for streamable-http transport (default: 9003)')
     
-    mcp.run(transport="streamable-http", host="127.0.0.1", port=9000)
+    args = parser.parse_args()
+    
+    if args.transport == 'streamable-http':
+        mcp.run(transport=args.transport, host=args.host, port=args.port)
+    elif args.transport == 'stdio':
+        mcp.run(transport='stdio')
+    else:
+        raise ValueError(f"Invalid transport: {args.transport}")
+
+
+if __name__ == "__main__":
+    main()
