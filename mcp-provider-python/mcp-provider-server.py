@@ -20,4 +20,4 @@ def lookup_provider(npi: str) -> dict:
             return provider.model_dump()
     return None
 
-mcp.run(transport="streamable-http", host="127.0.0.1", port=9004)
+mcp.run(transport="streamable-http", host="127.0.0.1", port=9002)
